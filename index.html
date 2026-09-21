@@ -135,9 +135,12 @@ function paw(x,y,s,color){
 /* ---------- draw one full frame ---------- */
 function draw(){
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle = C.light; ctx.fillRect(0,0,W,H);
 
-  // decorations
+  // Background
+  ctx.fillStyle = C.light;
+  ctx.fillRect(0,0,W,H);
+
+  // Decorations
   heart(105,72,64,C.plum);
   sparkle(940,130,40,C.gold);
   paw(965,78,30,C.soft);
@@ -152,68 +155,130 @@ function draw(){
   heart(935,1240,42,C.soft);
   sparkle(160,1275,26,C.gold);
 
- // Bottom location
-ctx.save();
-
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-
-// Cafe name
-ctx.fillStyle = C.plum;
-ctx.font = "700 38px Quicksand, sans-serif";
-ctx.fillText("MEOW CAKES CAFE & BAKERS", 540, 1295);
-
-// Location
-ctx.fillStyle = C.soft;
-ctx.font = "700 32px Quicksand, sans-serif";
-ctx.fillText("SURANDAI", 540, 1330);
-
-ctx.restore();
-
-  // photo circle
+  // Photo circle
   ctx.save();
-  ctx.beginPath(); ctx.arc(PHOTO.cx,PHOTO.cy,PHOTO.r,0,Math.PI*2); ctx.clip();
-  ctx.fillStyle = "#2d1740"; ctx.fillRect(0,0,W,H);
+
+  ctx.beginPath();
+  ctx.arc(PHOTO.cx, PHOTO.cy, PHOTO.r, 0, Math.PI * 2);
+  ctx.clip();
+
+  ctx.fillStyle = "#2d1740";
+  ctx.fillRect(0,0,W,H);
+
   const srcEl = still || video;
   const vw = still ? still.naturalWidth : video.videoWidth;
   const vh = still ? still.naturalHeight : video.videoHeight;
+
   if(vw && vh){
-    const d = PHOTO.r*2, sc = Math.max(d/vw, d/vh);
-    const dw = vw*sc, dh = vh*sc;
-    if(!still && CONFIG.mirrorFront && facing==="user"){
-      ctx.translate(PHOTO.cx*2,0); ctx.scale(-1,1);
+    const d = PHOTO.r * 2;
+    const sc = Math.max(d/vw, d/vh);
+    const dw = vw * sc;
+    const dh = vh * sc;
+
+    if(!still && CONFIG.mirrorFront && facing === "user"){
+      ctx.translate(PHOTO.cx * 2, 0);
+      ctx.scale(-1, 1);
     }
-    ctx.drawImage(srcEl, PHOTO.cx-dw/2, PHOTO.cy-dh/2, dw, dh);
+
+    ctx.drawImage(
+      srcEl,
+      PHOTO.cx - dw/2,
+      PHOTO.cy - dh/2,
+      dw,
+      dh
+    );
   }
+
   ctx.restore();
 
-  // rings — thin gold inside, thick plum outside (like the logo)
-  ctx.lineWidth = 6; ctx.strokeStyle = C.gold;
-  ctx.beginPath(); ctx.arc(PHOTO.cx,PHOTO.cy,PHOTO.r+16,0,Math.PI*2); ctx.stroke();
-  ctx.lineWidth = 26; ctx.strokeStyle = C.plum;
-  ctx.beginPath(); ctx.arc(PHOTO.cx,PHOTO.cy,PHOTO.r+42,0,Math.PI*2); ctx.stroke();
+  // Photo rings
+  ctx.lineWidth = 6;
+  ctx.strokeStyle = C.gold;
+  ctx.beginPath();
+  ctx.arc(PHOTO.cx, PHOTO.cy, PHOTO.r + 16, 0, Math.PI * 2);
+  ctx.stroke();
 
-  // logo badge
+  ctx.lineWidth = 26;
+  ctx.strokeStyle = C.plum;
+  ctx.beginPath();
+  ctx.arc(PHOTO.cx, PHOTO.cy, PHOTO.r + 42, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Logo badge
   ctx.fillStyle = C.light;
-  ctx.beginPath(); ctx.arc(BADGE.cx,BADGE.cy,BADGE.r+12,0,Math.PI*2); ctx.fill();
+  ctx.beginPath();
+  ctx.arc(BADGE.cx, BADGE.cy, BADGE.r + 12, 0, Math.PI * 2);
+  ctx.fill();
+
   ctx.save();
-  ctx.beginPath(); ctx.arc(BADGE.cx,BADGE.cy,BADGE.r,0,Math.PI*2); ctx.clip();
+
+  ctx.beginPath();
+  ctx.arc(BADGE.cx, BADGE.cy, BADGE.r, 0, Math.PI * 2);
+  ctx.clip();
+
   if(logoImg){
-    const sc = (BADGE.r*2)/Math.min(logoImg.width, logoImg.height);
-    ctx.drawImage(logoImg, BADGE.cx-logoImg.width*sc/2, BADGE.cy-logoImg.height*sc/2, logoImg.width*sc, logoImg.height*sc);
+    const sc = (BADGE.r * 2) /
+      Math.min(logoImg.width, logoImg.height);
+
+    ctx.drawImage(
+      logoImg,
+      BADGE.cx - logoImg.width * sc / 2,
+      BADGE.cy - logoImg.height * sc / 2,
+      logoImg.width * sc,
+      logoImg.height * sc
+    );
   }
+
   ctx.restore();
 
-  // timer number (preview only — cleared before the final capture)
+  // Timer
   if(countdown > 0){
     ctx.save();
-    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.font = "700 300px Quicksand, sans-serif";
     ctx.fillStyle = "rgba(255,255,255,.92)";
-    ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 24;
-    ctx.fillText(String(countdown), PHOTO.cx, PHOTO.cy+10);
+    ctx.shadowColor = "rgba(0,0,0,.35)";
+    ctx.shadowBlur = 24;
+
+    ctx.fillText(
+      String(countdown),
+      PHOTO.cx,
+      PHOTO.cy + 10
+    );
+
     ctx.restore();
   }
+
+  // ==========================================
+  // CAFE NAME + LOCATION
+  // ==========================================
+
+  ctx.save();
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  // Cafe Name
+  ctx.fillStyle = C.plum;
+  ctx.font = "700 38px Quicksand, sans-serif";
+  ctx.fillText(
+    "MEOW CAKES CAFE & BAKERS",
+    540,
+    1265
+  );
+
+  // Location
+  ctx.fillStyle = C.plum;
+  ctx.font = "700 34px Quicksand, sans-serif";
+  ctx.fillText(
+    "SURANDAI",
+    540,
+    1315
+  );
+
+  ctx.restore();
 }
 function loop(){ if(!frozen) draw(); requestAnimationFrame(loop); }
 
