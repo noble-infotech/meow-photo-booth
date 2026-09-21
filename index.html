@@ -152,6 +152,24 @@ function draw(){
   heart(935,1240,42,C.soft);
   sparkle(160,1275,26,C.gold);
 
+  // Bottom location
+ctx.save();
+
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+
+// Cafe name
+ctx.fillStyle = C.plum;
+ctx.font = "700 28px Quicksand, sans-serif";
+ctx.fillText("MEOW CAKES CAFE & BAKERS", 540, 1300);
+
+// Location
+ctx.fillStyle = C.soft;
+ctx.font = "600 24px Quicksand, sans-serif";
+ctx.fillText("SURANDAI", 540, 1330);
+
+ctx.restore();
+
   // photo circle
   ctx.save();
   ctx.beginPath(); ctx.arc(PHOTO.cx,PHOTO.cy,PHOTO.r,0,Math.PI*2); ctx.clip();
